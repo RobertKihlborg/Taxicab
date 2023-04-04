@@ -1,4 +1,4 @@
-package taxicab
+package Go
 
 import (
 	"math/big"
