@@ -24,28 +24,28 @@ func init() {
 	c114 = big.NewInt(114)
 }
 
-func Square(x *Int) *Int {
+func BigSquare(x *Int) *Int {
 	return new(Int).Mul(x, x)
 }
 
-func SetToSquare(z, x *Int) *Int {
+func BigSetToSquare(z, x *Int) *Int {
 	return z.Exp(x, c2, nil)
 }
 
-func Cube(x *Int) *Int {
+func BigCube(x *Int) *Int {
 	return new(Int).Mul(x, new(Int).Mul(x, x))
 }
 
-func SetToCube(z, x *Int) *Int {
+func BigSetToCube(z, x *Int) *Int {
 	return z.Exp(x, c3, nil)
 }
 
-func SwapSign(z *Int) *Int {
+func BigSwapSign(z *Int) *Int {
 	z.Neg(z)
 	return z
 }
 
-func Sum(x []*Int) *Int {
+func BigSum(x []*Int) *Int {
 	a := new(Int)
 
 	for _, n := range x {
@@ -54,31 +54,29 @@ func Sum(x []*Int) *Int {
 	return a
 }
 
-func CubeRootFloored(x *Int) *Int {
+func BigCubeRootFloored(x *Int) *Int {
 	if x.BitLen() == 0 {
 		return new(Int)
 	}
 
-	nLog2Floored := uint(x.BitLen() - 1)
-	lowGuessLog2 := nLog2Floored / 3
+	xLog2Floored := uint64(x.BitLen() - 1)
+	lowGuessLog2 := xLog2Floored / 3
 	highGuessLog2 := lowGuessLog2 + 1
 
-	lowGuess := new(Int).Lsh(c1, lowGuessLog2)
-	highGuess := new(Int).Lsh(c1, highGuessLog2)
+	lowGuess := new(Int).Lsh(c1, uint(lowGuessLog2))
+	highGuess := new(Int).Lsh(c1, uint(highGuessLog2))
 
-	one := big.NewInt(1)
 	// highGuess > lowGuess + 1
-	for highGuess.Cmp(new(Int).Add(lowGuess, one)) == 1 {
+	for highGuess.Cmp(new(Int).Add(lowGuess, c1)) == 1 {
 		// newGuess = (highGuess + lowGuess) / 2
 		newGuess := new(Int).Add(lowGuess, highGuess)
 		newGuess.Rsh(newGuess, 1)
 
-		if Cube(newGuess).Cmp(x) == 1 {
+		if BigCube(newGuess).Cmp(x) == 1 {
 			highGuess = newGuess
 		} else {
 			lowGuess = newGuess
 		}
 	}
-
 	return lowGuess
 }

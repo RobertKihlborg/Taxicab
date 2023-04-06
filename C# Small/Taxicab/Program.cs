@@ -29,12 +29,12 @@ namespace Taxicab
         public const decimal TA6 = 24153319581254312065344M;        // 2^74,4
         public const decimal PTA7 = 24885189317885898975235988544M; // 2^94,3
 
-        public static uint FloorLog2(decimal n)
+        public static uint64 FloorLog2(decimal n)
         {
             if (n == 0)
                 return 0;
 
-            uint counter = 0;
+            uint64 counter = 0;
 
             BigInteger x = new BigInteger(n);
             
@@ -47,7 +47,7 @@ namespace Taxicab
         }
         
 
-        public static decimal Pow(decimal n, uint power)
+        public static decimal Pow(decimal n, uint64 power)
         {
             decimal x = 1;
 
@@ -61,8 +61,8 @@ namespace Taxicab
 
         public static ulong FloorCubeRoot(decimal n)
         {
-            uint floorLog8 = FloorLog2(n) / 3;
-            uint ceilLog8 = floorLog8 + 1;
+            uint64 floorLog8 = FloorLog2(n) / 3;
+            uint64 ceilLog8 = floorLog8 + 1;
 
             ulong lowGuess = (ulong) Pow((decimal)2, floorLog8);
             ulong highGuess = (ulong) Pow((decimal)2, ceilLog8);
