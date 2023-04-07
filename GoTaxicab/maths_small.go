@@ -4,6 +4,14 @@ import (
 	"math/bits"
 )
 
+func SmallPow(x, y uint64) uint64 {
+	res := uint64(1)
+	for i := uint64(0); i < y; i++ {
+		res *= x
+	}
+	return res
+}
+
 func SmallCube(x uint64) uint64 {
 	return x * x * x
 }

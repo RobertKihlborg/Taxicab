@@ -68,3 +68,32 @@ func BigRelativeSumAlgorithm(target *Int) []BigNumPair {
 
 	return res
 }
+
+func BigCubeSumAlgorithm(target *Int) []BigNumPair {
+	var res []BigNumPair
+
+	maxY := BigCubeRootFloored(target)
+	minY := BigCubeRootFloored(new(Int).Rsh(target, 1))
+	y := maxY
+	x := bigGetStartX(y, target)
+	//fmt.Printf("y range: %v, %v \n", minY, maxY)
+	tmpCubeSum1 := new(Int)
+	tmpCubeSum2 := new(Int)
+	for y.Cmp(minY) >= 0 {
+		//fmt.Printf("Testing x=%v and y=%v\n", x, y)
+		switch BigSetToCubeSum(tmpCubeSum1, tmpCubeSum2, x, y).Cmp(target) {
+		case 1:
+			y.Sub(y, c1)
+			x.Add(x, c1)
+
+		case -1:
+			x.Add(x, c6)
+		case 0:
+			res = append(res, BigNumPair{a: new(Int).Set(x), b: new(Int).Set(y)})
+			y.Sub(y, c1)
+			x.Add(x, c7)
+		}
+	}
+
+	return res
+}

@@ -40,6 +40,13 @@ func BigSetToCube(z, x *Int) *Int {
 	return z.Exp(x, c3, nil)
 }
 
+func BigSetToCubeSum(z, tmp, x, y *Int) *Int {
+	BigSetToCube(z, x)
+	BigSetToCube(tmp, y)
+	z.Add(z, tmp)
+	return z
+}
+
 func BigSwapSign(z *Int) *Int {
 	z.Neg(z)
 	return z
